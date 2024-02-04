@@ -1,0 +1,35 @@
+import { LineEdit, VerticalBox, HorizontalBox, Button, ComboBox } from "std-widgets.slint";
+
+export component AppWindow inherits Window {
+    in-out property <string> cutoff-text: "10";
+    in-out property <string> file-ending-selected: "pdf";
+    in-out property <[string]> file-endings: ["pdf"];
+
+    callback started();
+
+    VerticalBox{
+        cutoff := LineEdit {
+            font-size: 14px;
+            height: 30px;
+            text: root.cutoff-text;
+            input-type: number;
+        }
+
+        ComboBox := ComboBox {
+            width: self.preferred-width;
+            height: self.preferred-height;
+            model: root.file_endings;
+            current-value: root.file-endings[0];
+            selected => {
+                root.file-ending-selected = root.file-endings[ComboBox.current-index]
+            }
+        }
+
+        Button{
+            text: "Rename";
+            primary: true;
+            height: 30px;
+            clicked => {started()}
+        }
+    }
+}
